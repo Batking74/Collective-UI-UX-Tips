@@ -2,7 +2,7 @@
   "name": "openchat",
   "version": "1.0.0",
   "description": "OpenChat",
-  "main": "server.js",
+  "main": "server/server.js",
   "dependencies": {
     "@apollo/client": "^3.9.7",
     "dotenv": "^16.4.5",

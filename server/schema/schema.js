@@ -1,6 +1,6 @@
 // Importing Modules/Packages
-const feedback = require('./models/Feedback');
-const Post = require('./models/Post');
+const feedback = require('../models/Feedback');
+const Post = require('../models/Post');
 const {
     GraphQLSchema,
     GraphQLList,
