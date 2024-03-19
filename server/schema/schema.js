@@ -1,5 +1,5 @@
 // Importing Modules/Packages
-const User = require('../models/User');
+const feedback = require('../models/Feedback');
 const Post = require('../models/Post');
 const {
     GraphQLSchema,
@@ -17,97 +17,115 @@ const logError = ({ message }, queryName, queryType) => {
 }
 
 
-const UserType = new GraphQLObjectType({
-    name: 'User',
+// Describing Query Options for when I make queries
+const FeedbackType = new GraphQLObjectType({
+    name: 'Feedback',
     fields: () => ({
         id: { type: GraphQLID },
         Username: { type: GraphQLString },
-        Email: { type: GraphQLString },
-        Password: { type: GraphQLString },
-        Posts: { type: new GraphQLList(PostType) }
+        Message: { type: GraphQLString }
     })
 });
-
 
 const PostType = new GraphQLObjectType({
     name: 'Post',
     fields: () => ({
         id: { type: GraphQLID },
-        User: { type: GraphQLString },
+        Username: { type: GraphQLString },
         Content: { type: GraphQLString }
     })
-})
+});
 
 
+// Getters for retriving data
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        ReadUsers: {
-            type: new GraphQLList(UserType),
-            async resolve(parent, args) {
-                // Will return all Users in database
+        QueryAllPosts: {
+            type: new GraphQLList(PostType),
+            async resolve() {
+                // Retrives all Posts from the Database, and sends to client
                 try {
-                    return await User.find();
+                    return await Post.find();
                 }
                 catch(error) {
-                    logError(error, 'ReadUsers', 'query');
+                    logError(error, 'QueryAllPosts', 'query');
                 }
             }
         },
-        ReadUser: {
-            type: UserType,
-            args: { id: { type: GraphQLID } },
-            async resolve(parent, { id }) {
-                // Will return Specific User in database
-                try {
-                    return await User.findById(id);
-                }
-                catch(error) {
-                    logError(error, 'ReadUser', 'query');
-                }
-            }
-        },
-        ReadAllUsersPosts: {
-            type: new GraphQLList(PostType),
-            resolve(parent, args) {
-                // Will display all users posts in database
-            }
-        },
-        ReadUserPosts: {
-            type: new GraphQLList(PostType),
-            args: { id: { type: GraphQLID } },
-            resolve(parent, { id }) {
-                // Will didplay a list of all a specific users posts
-            }
-        },
-        ReadUserPost: {
+        QueryPost: {
             type: PostType,
-            args: { id: { type: GraphQLID } },
-            resolve(parent, { id }) {
-                // Will displays a specific users post
+            args: {
+                id: { type: GraphQLID }
+            },
+            async resolve(parent, { id }) {
+                // Retrives a Specific Post from the Database, and sends to client
+                try {
+                    return await Post.findById(id);
+                }
+                catch(error) {
+                    logError(error, 'QueryPost', 'query');
+                }
+            }
+        },
+        QueryAllFeedback: {
+            type: new GraphQLList(FeedbackType),
+            async resolve() {
+                // Retrives all Feedback from the Database, and sends to client
+                try {
+                    return await feedback.find();
+                }
+                catch(error) {
+                    logError(error, 'QueryAllFeedback', 'query');
+                }
             }
         }
     }
 })
 
 
+// Setters for altering and creating data
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        CreateUser: {
-            type: UserType,
+        CreatePost: {
+            type: PostType,
             args: {
                 Username: { type: GraphQLString },
-                Email: { type: GraphQLString },
-                Password: { type: GraphQLString }
+                Content: { type: GraphQLString }
             },
-            async resolve(parent, { Username, Email, Password }) {
-                // Creates a new User
+            async resolve(parent, { Username, Content }) {
+                // Creates a new Post in MongoDB
                 try {
-                    return await User.create({ Username, Email, Password });
+                    // Sanitizing Data
+                    if(Username && Content) {
+                        return await Post.create({ Username, Content });
+                    }
                 }
                 catch(error) {
-                    logError(error, 'CreateUser', 'mutation');
+                    logError(error, 'CreatePost', 'mutation');
+                }
+            }
+        },
+        SaveFeedback: {
+            type: FeedbackType,
+            args: {
+                Username: { type: GraphQLString },
+                Message: { type: GraphQLString }
+            },
+            async resolve(parent, { Message, Username }) {
+                console.log(Message)
+                console.log(Username)
+                // Saves users feedback to MongoDB
+                try {
+                    // Data Sanitation
+                    if(!Username) Username = 'Anonymous';
+                    if(Message) {
+                        return await feedback.create({ Username, Message });
+                    }
+                }
+                catch(error) {
+                    logError(error, 'SaveFeedback', 'mutation');
                 }
             }
         }

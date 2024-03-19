@@ -1,19 +1,39 @@
-import React from 'react';
+// Importing Modules/Packages
+import NavigationComponent from '../Components/NavigationComponent';
+import DisplayPosts from '../Components/DisplayPosts';
+import { CREATE_POST } from '../utils/mutations';
+import { useMutation } from '@apollo/client';
+import React, { useState } from 'react';
 
 export default function HomePage() {
+    const [createPost, { data, loading }] = useMutation(CREATE_POST);
+    const [Username, setUsername] = useState('');
+    const [Content, setContent] = useState('');
+    const [displayNumber, setDisplayNumber] = useState(5);
+
+    // Creates a new Post in MongoDB
+    const validate = async (e) => {
+        e.preventDefault();
+        if (Username && Content) {
+            // Create a new Post
+            try {
+                await createPost({ variables: { Name: Username, Content } });
+            }
+            catch (error) {
+                console.error('Error creating post:', error);
+            }
+        }
+        else {
+            alert('Inputs cannot be empty!');
+        }
+    }
+
+    // Rendering JSX
     return (
         <div>
-            <section className="top">
-                <header className="bg-primary text-light mb-4 py-3 flex-row align-center">
-                    <div
-                        className="container flex-row justify-space-between-lg justify-center align-center"
-                    >
-                        <h1 className="m-0">UI/UX Tips</h1>
-                        <p className="m-0">Get practical advice from other developers.</p>
-                        <button className="btn" id="feedback-btn">Feedback</button>
-                    </div>
-                </header>
-            </section>
+            {/* Rendering Navigation */}
+            <NavigationComponent nameOfNextPage="Feedback" />
+
             <section className="tip-form">
                 <form
                     className="flex-row justify-center justify-space-between-md align-center"
@@ -23,8 +43,9 @@ export default function HomePage() {
                         <textarea
                             name="tipText"
                             id="tipText"
-                            placeholder="Here's a new UI tip..."
-                            value=""
+                            placeholder="Talk about anything..."
+                            value={Content}
+                            onChange={({ target }) => { setContent(target.value) }}
                             className="form-input w-100"
                         ></textarea>
                     </div>
@@ -32,25 +53,24 @@ export default function HomePage() {
                         <input
                             name="tipUsername"
                             id="tipUsername"
-                            placeholder="Add your name to get credit for the thought..."
-                            value=""
+                            placeholder="Your First Name"
+                            value={Username}
+                            onChange={({ target }) => { setUsername(target.value) }}
                             className="form-input w-100"
                         />
                     </div>
                     <div className="col-12 col-lg-3">
-                        <button className="btn btn-primary btn-block py-3" type="submit">
+                        <button onClick={validate} className="btn btn-primary btn-block py-3" type="submit">
                             Add Tip
                         </button>
                     </div>
                 </form>
             </section>
+            
             <section className="tips" id="tip-container">
-                <div className="card mb-3 m-3">
-                    <h4 className="card-header bg-primary text-light p-2 m-0">Username</h4>
-                    <div className="card-body bg-light p-2">
-                        <p>Hello JC</p>
-                    </div>
-                </div>
+                {/* Rendering Posts */}
+                <DisplayPosts displayNumber={displayNumber} />
+                <button onClick={() => { setDisplayNumber(displayNumber + 5); }}>See More</button>
             </section>
         </div>
     )

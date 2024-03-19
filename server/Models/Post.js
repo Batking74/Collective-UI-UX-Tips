@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 
 // Designing Schema
 const postSchema = new Schema({
-    UserID: String,
+    Username: String,
     Content: String
 });
 

@@ -1,53 +1,58 @@
-import React from 'react';
-
+// Importing Modules/Packages
+import NavigationComponent from '../Components/NavigationComponent';
+import { SAVE_FEEDBACK } from '../utils/mutations';
+import { useMutation } from '@apollo/client';
+import React, { useState } from 'react';
 
 export default function FeedbackPage() {
+    const [addFeedback, { data }] = useMutation(SAVE_FEEDBACK);
+    const [Message, setMessage] = useState('');
+    const [Name, setName] = useState('');
+
+    // Validates and Saves Feedback
+    const submitFeedback = async (e) => {
+        e.preventDefault();
+        if(Message) {
+            // Saving new Feedback to MongoDB
+            const { data } = await addFeedback({ variables: { Name, Message } });
+            console.log(data);
+        }
+        else alert('Feedback input cannot be empty!');
+    }
+
     return (
         <>
-            <section className="top">
-                <header className="bg-primary text-light mb-4 py-3 flex-row align-center">
-                    <div
-                        className="container flex-row justify-space-between-lg justify-center align-center"
-                    >
-                        <h1 className="m-0">UI/UX Tips</h1>
-                        <p className="m-0">Get practical advice from other developers.</p>
-                        <button className="btn" id="home-btn">Homepage</button>
-                    </div>
-                </header>
-            </section>
+            {/* Rendering Navigation */}
+            <NavigationComponent nameOfNextPage="Homepage" />
+
             <h1 className="text-center">Submit Feedback</h1>
             <section className="feedback-form">
                 <form
                     className="flex-row justify-center justify-space-between-md align-center"
-                    id="feedback-form"
-                >
+                    id="feedback-form">
                     <div className="col-12">
                         <textarea
-                            name="feedbackText"
-                            id="feedbackText"
                             placeholder="Enter feedback here"
-                            value=""
-                            className="form-input w-100"
-                        ></textarea>
+                            value={Message}
+                            onChange={({ target }) => { setMessage(target.value) }}
+                            className="form-input w-100" />
                     </div>
+
                     <div className="col-12 col-lg-9">
                         <input
-                            name="feedbackUsername"
-                            id="feedbackUsername"
                             placeholder="Username here (optional)"
-                            value="anonymous"
-                            className="form-input w-100"
-                        />
+                            value={Name}
+                            onChange={({ target }) => { setName(target.value) }}
+                            className="form-input w-100" />
                     </div>
 
                     <div className="col-12 col-lg-3">
-                        <button className="btn btn-primary btn-block py-3" type="submit">
+                        <button className="btn btn-primary btn-block py-3" onClick={submitFeedback} type="submit">
                             Add feedback
                         </button>
                     </div>
                 </form>
             </section>
-
         </>
     )
 }

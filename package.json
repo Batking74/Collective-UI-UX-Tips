@@ -1,26 +1,31 @@
 {
-  "name": "collective-ui-ux-tips",
+  "name": "openchat",
   "version": "1.0.0",
-  "description": "collective ui/ux-tips",
+  "description": "OpenChat",
   "main": "server.js",
   "dependencies": {
+    "@apollo/client": "^3.9.7",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
     "express-graphql": "^0.12.0",
-    "graphql": "^16.8.1",
     "mongoose": "^8.2.1",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3"
   },
   "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
     "dev": "cd Client && vite --open",
-    "start": "cd server && nodemon server.js"
+    "client": "cd Client && vite --open",
+    "server": "cd server && nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
     "nodemon": "^3.1.0",
     "vite": "^5.1.6"
   }

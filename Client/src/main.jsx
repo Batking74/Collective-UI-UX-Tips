@@ -4,6 +4,8 @@ import HomePage from './Pages/HomePage.jsx';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import React from 'react';
+
+// Stylesheets
 import './Assets/index.css';
 
 
