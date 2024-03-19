@@ -53,21 +53,6 @@ const RootQuery = new GraphQLObjectType({
                 }
             }
         },
-        QueryPost: {
-            type: PostType,
-            args: {
-                id: { type: GraphQLID }
-            },
-            async resolve(parent, { id }) {
-                // Retrives a Specific Post from the Database, and sends to client
-                try {
-                    return await Post.findById(id);
-                }
-                catch(error) {
-                    logError(error, 'QueryPost', 'query');
-                }
-            }
-        },
         QueryAllFeedback: {
             type: new GraphQLList(FeedbackType),
             async resolve() {
