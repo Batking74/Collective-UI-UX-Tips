@@ -9,7 +9,6 @@ export default function HomePage() {
     const [createPost, { data, loading }] = useMutation(CREATE_POST);
     const [Username, setUsername] = useState('');
     const [Content, setContent] = useState('');
-    const [displayNumber, setDisplayNumber] = useState(5);
 
     // Creates a new Post in MongoDB
     const validate = async (e) => {
@@ -69,8 +68,7 @@ export default function HomePage() {
             
             <section className="tips" id="tip-container">
                 {/* Rendering Posts */}
-                <DisplayPosts displayNumber={displayNumber} />
-                <button onClick={() => { setDisplayNumber(displayNumber + 5); }}>See More</button>
+                <DisplayPosts />
             </section>
         </div>
     )

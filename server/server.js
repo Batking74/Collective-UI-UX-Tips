@@ -8,6 +8,14 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const corsOptions = { origin: ['http://localhost:5173'] };
 
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+    });
+}
+
 
 // Creating a route for GraphQL API
 app.use('/graphQL', cors(corsOptions), graphqlHTTP({
@@ -24,6 +32,6 @@ connection.once('open', () => {
     })
     console.log('Database connected successfully!');
 })
-.on('error', (error) => {
-    throw error;
-})
+    .on('error', (error) => {
+        throw error;
+    })
