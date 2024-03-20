@@ -1,7 +1,7 @@
 // Importing Modules/Packages
 const { connection } = require('./database/database');
 const { graphqlHTTP } = require('express-graphql');
-const schema = require('./schema/schema');
+const schema = require('../server/schema/schema');
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
