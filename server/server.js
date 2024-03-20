@@ -3,7 +3,6 @@ const { connection } = require('./database/database');
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./schema/schema');
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,13 +24,15 @@ app.use('/graphQL', cors(corsOptions), graphqlHTTP({
 }));
 
 
-// Listening for Database open
-connection.once('open', () => {
-    // Starting Server
-    app.listen(PORT, () => {
-        console.log(`Listening on Port ${PORT}!`);
+// Starting Server
+app.listen(PORT, () => {
+    console.log(`Listening on Port ${PORT}!`);
+
+    // Listening for Database open
+    connection.once('open', () => {
+        console.log('Database connected successfully!');
     })
-    console.log('Database connected successfully!');
-}).on('error', (error) => {
-    throw error;
+    .on('error', (error) => {
+        throw error;
+    })
 })
