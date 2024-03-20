@@ -16,9 +16,9 @@
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon server/server.js",
-    "client": "cd Client && vite --open",
+    "client": "cd client && vite --open",
     "start": "node server/server.js",
-    "build": "npm i && cd Client && vite build"
+    "build": "npm i && cd client && vite build"
   },
   "keywords": [],
   "author": "",
