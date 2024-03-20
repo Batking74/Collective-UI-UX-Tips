@@ -18,7 +18,7 @@
     "server": "nodemon server/server.js",
     "client": "cd Client && vite --open",
     "start": "node server/server.js",
-    "build": "cd Client && vite build"
+    "build": "npm i && cd Client && vite build"
   },
   "keywords": [],
   "author": "",
