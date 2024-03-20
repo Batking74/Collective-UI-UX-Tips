@@ -7,15 +7,15 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000;
-const corsOptions = { origin: ['http://localhost:5173'] };
+const corsOptions = { origin: ['http://localhost:5173', 'https://openchat-0ptg.onrender.com'] };
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../client/dist')));
+// if (process.env.NODE_ENV === 'production') {
+//     app.use(express.static(path.join(__dirname, '../client/dist')));
 
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-    });
-}
+//     app.get('*', (req, res) => {
+//         res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+//     });
+// }
 
 
 // Creating a route for GraphQL API
