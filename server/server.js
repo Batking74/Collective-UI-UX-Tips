@@ -32,7 +32,6 @@ connection.once('open', () => {
         console.log(`Listening on Port ${PORT}!`);
     })
     console.log('Database connected successfully!');
+}).on('error', (error) => {
+    throw error;
 })
-    .on('error', (error) => {
-        throw error;
-    })

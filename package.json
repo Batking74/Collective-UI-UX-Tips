@@ -15,14 +15,15 @@
   },
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon server/server.js",
     "client": "cd Client && vite --open",
-    "server": "cd server && nodemon server.js",
-    "start": "cd server && node server.js",
-    "render-build": "cd Client && vite build"
+    "start": "node server/server.js",
+    "build": "cd client && npm i && npm run build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "commonjs",
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
     "concurrently": "^8.2.2",
