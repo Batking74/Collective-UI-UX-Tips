@@ -39,9 +39,9 @@ const startApolloServerAndApp = async () => {
 
         // Starting Server
         app.listen(PORT, () => console.log(`Listening on Port ${PORT}!`))
-        .on('error', (error) => console.error(`Server Error: ${error}`));
+        .on('error', (error) => console.log(`Server Error: ${error}`));
     })
-    .on('error', (error) => console.error(`Database Connection Error: ${error}`));
+    .on('error', (error) => console.log(`Database Connection Error: ${error}`));
 }
 
 // Starts Application
