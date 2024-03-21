@@ -1,5 +1,5 @@
 // Importing Modules/Packages
-const corsOptions = { origin: ['http://localhost:5173', 'https://openchat-0ptg.onrender.com'] };
+const corsOptions = { origin: ['http://localhost:3000', 'https://openchat-0ptg.onrender.com'] };
 const { expressMiddleware } = require('@apollo/server/express4');
 const { connection } = require('./database/database');
 const { ApolloServer } = require('@apollo/server');
@@ -39,12 +39,16 @@ const startApolloServerAndApp = async () => {
 
         // Starting Server
         app.listen(PORT, () => console.log(`Listening on Port ${PORT}!`))
-        .on('error', (error) => console.log(`Server Error: ${error}`));
+        .on('error', (error) => {
+            console.error(`Server Error: ${error}`);
+            throw error;
+        });
     })
-    .on('error', (error) => console.log(`Database Connection Error: ${error}`));
+    .on('error', (error) => {
+        console.error(`Database Connection Error: ${error}`);
+        throw error;
+    });
 }
 
 // Starts Application
 startApolloServerAndApp();
-
-
