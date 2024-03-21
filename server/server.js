@@ -33,19 +33,21 @@ const startApolloServerAndApp = async () => {
     // Creating API Route for Apollo Server
     app.use('/graphQL', cors(corsOptions), expressMiddleware(server));
 
-    // Listening for Database open
-    connection.once('open', () => {
-        console.log('Database connected successfully!');
+    // Starting Server
+    app.listen(PORT, () => {
+        console.log(`Listening on Port ${PORT}!`);
 
-        // Starting Server
-        app.listen(PORT, () => console.log(`Listening on Port ${PORT}!`))
+        // Listening for Database open
+        connection.once('open', () => {
+            console.log('Database connected successfully!');
+        })
         .on('error', (error) => {
-            console.error(`Server Error: ${error}`);
+            console.error(`Database Connection Error: ${error}`);
             throw error;
         });
     })
     .on('error', (error) => {
-        console.error(`Database Connection Error: ${error}`);
+        console.error(`Server Error: ${error}`);
         throw error;
     });
 }
