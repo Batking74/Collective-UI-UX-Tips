@@ -6,7 +6,6 @@ import React, { useState } from "react";
 export default function DisplayPosts() {
     const [displayNumber, setDisplayNumber] = useState(5);
     const { loading, data } = useQuery(QUERY_ALL_POSTS);
-
     if (!loading) {
         const { QueryAllPosts } = data;
         if (displayNumber > QueryAllPosts.length) setDisplayNumber(QueryAllPosts.length);

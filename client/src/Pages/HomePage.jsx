@@ -17,6 +17,7 @@ export default function HomePage() {
             // Create a new Post
             try {
                 await createPost({ variables: { Name: Username, Content } });
+                location.reload();
             }
             catch (error) {
                 console.error('Error creating post:', error);

@@ -2,9 +2,9 @@ import { Outlet } from 'react-router-dom';
 import React from 'react';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
-let uri = 'http://localhost:5000/graphQL';
+let uri = 'http://localhost:9000/GraphQL';
 if(location.hostname != 'localhost') {
-  uri = 'https://openchat-0ptg.onrender.com/graphQL';
+  uri = '/GraphQL';
 }
 
 // Apollo Client handles sending GraphQL queries and mutations to the graphQL server and managing the data returned from those operations.
